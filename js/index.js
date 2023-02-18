@@ -15,12 +15,20 @@ bruto.setAttribute('value', 0);
 tara.setAttribute('value', 0);
 excedente.setAttribute('value', 0);
 
+// Limpiar todos los inputs
+const clearInputs = ()=>{
+    bruto.value = 0
+    tara.value = 0
+    excedente.value = 0
+    neto.setAttribute('value', '')
+}
 
 // Por cada numero ingresado devuelve el resultado de la resta
 const operacion = ()=>{
     const calculo = parseInt(bruto.value) - parseInt(tara.value) - parseInt(excedente.value);
 
     neto.setAttribute('value', calculo);
+    neto.setAttribute('type', 'number')
 
     if (neto.value < 0 || neto.value > 60000){
         neto.style.background = "yellow"
@@ -31,13 +39,6 @@ const operacion = ()=>{
     }
 };
 
-// Limpiar todos los inputs
-const clearInputs = ()=>{
-    bruto.value = 0
-    tara.value = 0
-    excedente.value = 0
-    operacion()
-}
 
 // Pone un cero si el campo queda NaN
 const allwaysInt = (field)=>{
@@ -103,24 +104,29 @@ excedente.addEventListener('click', ()=>{
 const pesadas = []
 
 recordsBoton.addEventListener('click', ()=>{
-    pesadas.push({
-        Fecha : '17/02/2023',
-        bruto : bruto.value,
-        tara : tara.value,
-        excedente : excedente.value,
-        neto : neto.value
-    })
-    let pesada = ``
-    for(let i in pesadas){
-        pesada += `<tr>
-                <td>${[i]}</td>
-                <td>${fecha.toLocaleDateString()}</td>
-                <td>${pesadas[i].bruto}</td>
-                <td>${pesadas[i].tara}</td>
-                <td>${pesadas[i].excedente}</td>
-                <td>${pesadas[i].neto}</td>
-            </tr>`
-        }
-    bodyLoad.innerHTML = pesada
-
+    if(neto.value > 0){
+        pesadas.push({
+            Fecha : '17/02/2023',
+            bruto : bruto.value,
+            tara : tara.value,
+            excedente : excedente.value,
+            neto : neto.value
+        })
+        let pesada = ``
+        for(let i in pesadas){
+            pesada += `<tr>
+                    <td>${[i]}</td>
+                    <td>${fecha.toLocaleDateString()}</td>
+                    <td>${pesadas[i].bruto}</td>
+                    <td>${pesadas[i].tara}</td>
+                    <td>${pesadas[i].excedente}</td>
+                    <td>${pesadas[i].neto}</td>
+                </tr>`
+            }
+        bodyLoad.innerHTML = pesada
+        swal('Guardado', `ID ${pesadas.length-1}`, 'success')
+        clearInputs()
+    }else {
+        swal('No se guardo!', 'Verifique los campos!', 'error')
+    }
 })
