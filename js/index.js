@@ -3,6 +3,11 @@ const tara = document.querySelector('#tara');
 const neto = document.querySelector('#neto');
 const excedente = document.querySelector('#excedente');
 const mensaje = document.querySelector('.mensaje');
+const clearBoton = document.querySelector('#clearBtn');
+const recordsBoton = document.querySelector('#recordBtn');
+const bodyLoad = document.querySelector('#bodyLoad');
+
+const fecha = new Date()
 
 neto.setAttribute('disabled', true);
 
@@ -14,7 +19,9 @@ excedente.setAttribute('value', 0);
 // Por cada numero ingresado devuelve el resultado de la resta
 const operacion = ()=>{
     const calculo = parseInt(bruto.value) - parseInt(tara.value) - parseInt(excedente.value);
+
     neto.setAttribute('value', calculo);
+
     if (neto.value < 0 || neto.value > 60000){
         neto.style.background = "yellow"
         neto.style.color = "red"
@@ -23,6 +30,14 @@ const operacion = ()=>{
         neto.style.color = "white"
     }
 };
+
+// Limpiar todos los inputs
+const clearInputs = ()=>{
+    bruto.value = 0
+    tara.value = 0
+    excedente.value = 0
+    operacion()
+}
 
 // Pone un cero si el campo queda NaN
 const allwaysInt = (field)=>{
@@ -38,11 +53,30 @@ const selectValue = (field)=>{
     field.select();
 };
 
+// Limita a cinco los digitos del input
+const limitCharacter = (field)=>{
+    if(field.value.length > 5){
+        field.value = field.value.slice(0,5)
+    }
+}
 
-// Llama a la funcion cada vez que se presiona una tecla dentro del input
-bruto.addEventListener('keyup', operacion);
-tara.addEventListener('keyup', operacion);
-excedente.addEventListener('keyup', operacion);
+// Limpia el valor de los inputs
+clearBoton.addEventListener('click', clearInputs);
+
+// Por cada tecla presionada en el input se llaman las funciones 
+tara.addEventListener('keyup', ()=>{
+    limitCharacter(tara)
+    operacion()
+});
+bruto.addEventListener('keyup', ()=>{
+    limitCharacter(bruto)
+    operacion()
+});
+excedente.addEventListener('keyup', ()=>{
+    limitCharacter(excedente)
+    operacion()
+});
+
 
 // Llama a la funcion cada vez que el input pierde el focus
 bruto.addEventListener('blur', ()=>{
@@ -65,3 +99,28 @@ tara.addEventListener('click', ()=>{
 excedente.addEventListener('click', ()=>{
     selectValue(excedente);
 });
+
+const pesadas = []
+
+recordsBoton.addEventListener('click', ()=>{
+    pesadas.push({
+        Fecha : '17/02/2023',
+        bruto : bruto.value,
+        tara : tara.value,
+        excedente : excedente.value,
+        neto : neto.value
+    })
+    let pesada = ``
+    for(let i in pesadas){
+        pesada += `<tr>
+                <td>${[i]}</td>
+                <td>${fecha.toLocaleDateString()}</td>
+                <td>${pesadas[i].bruto}</td>
+                <td>${pesadas[i].tara}</td>
+                <td>${pesadas[i].excedente}</td>
+                <td>${pesadas[i].neto}</td>
+            </tr>`
+        }
+    bodyLoad.innerHTML = pesada
+
+})

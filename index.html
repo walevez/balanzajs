@@ -9,12 +9,14 @@
     <title>Balanza - JavaScript</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container mb-5 mt-2">
         <h1 class="text-center">Balanza Digital</h1>
     </div>
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
+            <!-- Formulario de pesadas -->
+            <div class="col-md-4 col-4">
+                <h3 class="text-center">Nueva Pesada</h3>
                 <form action="" method="post">
                     <label for="bruto">Bruto: </label>
                     <div class="input-group mb-3">
@@ -41,9 +43,25 @@
                     </div>
                 
                     <p class="mensaje"></p>
-
-                    <button class="btn btn-secondary">Grabar</button>
                 </form>
+                <button class="btn btn-secondary" id="recordBtn">Grabar</button>
+                <button class="btn btn-success" id="clearBtn">Limpiar</button>
+            </div>
+            <!-- Tabla de pesadas -->
+            <div class="col-8">
+                <h3 class="text-center">Ultimas Pesadas</h3>
+                <table class="table">
+                    <thead>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Bruto</th>
+                        <th>Tara</th>
+                        <th>Excedente</th>
+                        <th>Neto</th>
+                    </thead>
+                    <tbody id="bodyLoad">
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
